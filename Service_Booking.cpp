@@ -109,6 +109,7 @@ public:
                 exit(0);
             default:
                 cout << "Invalid choice! Try again.\n";
+                dashboard();
                 break;
             }
         }
