@@ -37,9 +37,6 @@ void saveUserData()
     userFile.close();
 }
 
-
-
-
 // ================================== Main Class of App ===========================================================
 class serviceBooking
 {
@@ -62,9 +59,6 @@ public:
     friend class payment_method;
     friend class MainMenu;
 };
-
-
-
 
 //  ================================== Payment Environment Class =====================================================
 class payment_method : public serviceBooking
@@ -94,16 +88,15 @@ public:
             cout << "2. Login\n";
             cout << "3. Exit\n";
             cout << "Enter your choice: ";
-            
+
             // Validate input
             if (!(cin >> choice))
             {
                 cout << "Invalid input! Please enter a numeric value: ";
-                cin.clear(); // Clear the error flag
+                cin.clear();                                         // Clear the error flag
                 cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-                continue; // Retry the loop
+                continue;                                            // Retry the loop
             }
-
 
             switch (choice)
             {
@@ -134,10 +127,6 @@ public:
     void login();
     void signup();
 };
-
-
-
-
 
 // =============================== structure contain data of Personnels =================================================
 struct Personnel
@@ -179,10 +168,6 @@ Personnel Electrician[5] = {
 Personnel *currentPersonnelList;
 Personnel selectedPersonnel;
 
-
-
-
-
 // ---------------------------------------------------------------Function for signup-------------------------------------------------------
 void dashboard::signup()
 {
@@ -208,9 +193,6 @@ void dashboard::signup()
     cout << "Signup Successful! Proceed to Login.\n";
 }
 
-
-
-
 // ------------------------------------------------------------Function for login-----------------------------------------------------------
 void dashboard::login()
 {
@@ -233,11 +215,7 @@ void dashboard::login()
     }
 }
 
-
-
-
 // ---------------------------------===========Function Definitions=============-------------------------------------------------------
-
 
 // -----------------------------------Main Menu---------------------------------------------------------------------
 void MainMenu::showMainMenu()
@@ -247,17 +225,16 @@ void MainMenu::showMainMenu()
     cout << "2. Give Rating" << endl;
     cout << "3. Exit" << endl;
     cout << "Enter your choice: ";
-    label1:
+label1:
     int choice;
     // Validate input
-        if (!(cin >> choice))
-        {
-            cout << "Invalid input! Please enter a numeric value: ";
-            cin.clear(); // Clear the error flag
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-            goto label1;  // Retry the loop
-
-        }
+    if (!(cin >> choice))
+    {
+        cout << "Invalid input! Please enter a numeric value: ";
+        cin.clear();                                         // Clear the error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+        goto label1;                                         // Retry the loop
+    }
 
     switch (choice)
     {
@@ -279,8 +256,6 @@ void MainMenu::showMainMenu()
     }
 }
 
-
-
 // ------------------------------------------Select Service type--------------------------------------------------------------
 void MainMenu::selectService()
 {
@@ -290,16 +265,16 @@ void MainMenu::selectService()
     cout << "3. Carpentor" << endl;
     cout << "4. HouseKeeper" << endl;
     cout << "Enter your choice: ";
-    label2:
+label2:
     int serviceChoice;
     // Validate input
-            if (!(cin >> serviceChoice))
-            {
-                cout << "Invalid input! Please enter a numeric value: ";
-                cin.clear(); // Clear the error flag
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-                goto label2; // Retry the loop
-            }
+    if (!(cin >> serviceChoice))
+    {
+        cout << "Invalid input! Please enter a numeric value: ";
+        cin.clear();                                         // Clear the error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+        goto label2;                                         // Retry the loop
+    }
 
     switch (serviceChoice)
     {
@@ -329,9 +304,6 @@ void MainMenu::selectService()
     lookurgency();
 }
 
-
-
-
 // --------------------------------------------Choose Urgency-----------------------------------------------------------------------
 void serviceBooking::lookurgency()
 {
@@ -339,16 +311,16 @@ void serviceBooking::lookurgency()
     cout << "1. Normal" << endl;
     cout << "2. Urgent (10$ - 15$ extra charge)" << endl;
     cout << "Enter your choice: ";
-    label3:
-        int urgentChoice;
-        // Validate input
-        if (!(cin >> urgentChoice))
-        {
-            cout << "Invalid input! Please enter a numeric value: ";
-            cin.clear(); // Clear the error flag
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-            goto label3; // Retry the loop
-        }
+label3:
+    int urgentChoice;
+    // Validate input
+    if (!(cin >> urgentChoice))
+    {
+        cout << "Invalid input! Please enter a numeric value: ";
+        cin.clear();                                         // Clear the error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+        goto label3;                                         // Retry the loop
+    }
 
     if (urgentChoice == 1)
     {
@@ -369,10 +341,6 @@ void serviceBooking::lookurgency()
     enterAddress();
 }
 
-
-
-
-
 // -------------------------------------------Address Selection---------------------------------------------------------
 void serviceBooking::enterAddress()
 {
@@ -391,11 +359,7 @@ void serviceBooking::enterAddress()
     }
 }
 
-
-
-
-
-int personnelChoice;            // Global Variable for personnel choice
+int personnelChoice; // Global Variable for personnel choice
 
 // -----------------------------------------------Select Personnel----------------------------------------------------------------------
 void serviceBooking::choosePersonnel()
@@ -417,13 +381,13 @@ void serviceBooking::choosePersonnel()
 label4:
     cout << "Choose Personnel (1 - 5): ";
     // Validate input
-            if (!(cin >> personnelChoice))
-            {
-                cout << "Invalid input! Please enter a numeric value.\n ";
-                cin.clear(); // Clear the error flag
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-                goto label4; // Retry the loop
-            }
+    if (!(cin >> personnelChoice))
+    {
+        cout << "Invalid input! Please enter a numeric value.\n ";
+        cin.clear();                                         // Clear the error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+        goto label4;                                         // Retry the loop
+    }
     if (personnelChoice < 1 || personnelChoice > 5)
     {
         cout << "Invalid option. try again." << endl;
@@ -432,8 +396,6 @@ label4:
     selectedPersonnel = currentPersonnelList[personnelChoice - 1];
     urgency_charge();
 }
-
-
 
 // ---------------------------------------------urgency charge-----------------------------------------------------------
 double urgent_charges = 0;
@@ -452,7 +414,6 @@ void serviceBooking::urgency_charge()
     }
     processPayment();
 }
-
 
 // ----------------------------------------Bill Generation------------------------------------------------------------------------------------
 void serviceBooking::processPayment()
@@ -473,8 +434,6 @@ void serviceBooking::processPayment()
     cout << "\tDiscount:               -" << 5 << "$" << endl;
 }
 
-
-
 // ----------------------------------------------Select Payment Option------------------------------------------------------------------------------
 void payment_method::paywith()
 {
@@ -486,13 +445,13 @@ void payment_method::paywith()
 label5:
     int payment_choice;
     // Validate input
-            if (!(cin >> payment_choice))
-            {
-                cout << "Invalid input! Please enter a numeric value: ";
-                cin.clear(); // Clear the error flag
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-                goto label5; // Retry the loop
-            }
+    if (!(cin >> payment_choice))
+    {
+        cout << "Invalid input! Please enter a numeric value: ";
+        cin.clear();                                         // Clear the error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+        goto label5;                                         // Retry the loop
+    }
 
     switch (payment_choice)
     {
@@ -518,8 +477,6 @@ label5:
     }
 }
 
-
-
 // ---------------------------------------------Card payment Method-------------------------------------------------------------------------------
 void payment_method::Card()
 {
@@ -529,31 +486,35 @@ void payment_method::Card()
 label:
     bool isValid;
     string c_no = "";
-    do {
+    do
+    {
         isValid = true;
         cin >> c_no;
         if (c_no == "")
-    {
-        cout << "\nCard No can't be empty. Try again.";
-        goto label;
-    }
+        {
+            cout << "\nCard No can't be empty. Try again.";
+            goto label;
+        }
 
         // check each character
         for (char c : c_no)
         {
-            if(!isdigit(c)){
+            if (!isdigit(c))
+            {
                 isValid = false;
                 break;
             }
         }
 
-        if(!isValid){
+        if (!isValid)
+        {
             cout << "Error! Please Enter numbers only.\n";
         }
 
-    }while(!isValid);
+    } while (!isValid);
 
-    if(c_no.length()!=16){
+    if (c_no.length() != 16)
+    {
         cout << "It must be 16 digit No.\n";
         goto label;
     }
@@ -579,7 +540,6 @@ label:
     showSuccessMessage();
 }
 
-
 // ---------------------------------------------UPI Process-------------------------------------------------------------------------------------
 void payment_method::UPI()
 {
@@ -601,7 +561,6 @@ void payment_method::UPI()
     showSuccessMessage();
 }
 
-
 // -----------------------------------------------------Show Success Message---------------------------------------------------------------------
 void serviceBooking::showSuccessMessage()
 {
@@ -616,7 +575,6 @@ void serviceBooking::showSuccessMessage()
     cout << "The original bill will be sent to your mobile no or email";
     cout << "\nWe will contact you soon! Have a great day!" << endl;
 }
-
 
 // -------------------------------------------------------------------Main Function-------------------------------------------------------------------
 int main()
