@@ -2,9 +2,9 @@
 #include <string>
 #include <map>
 #include <cstdlib>
-#include <chrono>
-#include <thread>
 #include <fstream>
+#include <unistd.h>
+#include <chrono>
 
 using namespace std;
 
@@ -37,6 +37,7 @@ void saveUserData()
     userFile.close();
 }
 
+
 // ================================== Main Class of App ===========================================================
 class serviceBooking
 {
@@ -45,20 +46,21 @@ private:
     string selectedUrgency;
     string address;
     string paymentMethod;
-    string something;
     double total_amount = 0;
     double platform_fee = 0;
+    double urgent_charges = 0;
 
 public:
+    void giveRating();
     void choosePersonnel();
     void enterAddress();
     void processPayment();
     void lookurgency();
-    void urgency_charge();
     void showSuccessMessage();
     friend class payment_method;
     friend class MainMenu;
 };
+
 
 //  ================================== Payment Environment Class =====================================================
 class payment_method : public serviceBooking
@@ -76,6 +78,8 @@ public:
     void selectService();
 };
 
+
+// ================================== Dashboard Class ============================================================
 class dashboard : public MainMenu
 {
 public:
@@ -141,23 +145,23 @@ struct Personnel
 };
 
 Personnel Carpentor[5] = {
-    {"Rajesh", 23, 5, 4.5, 2.8, 100.0, "\nOne of the best person for this work, honest and smartworking"},
-    {"Raju", 19, 1, 3.6, 4, 60.0, "\nVery new to this work worse experience for me"},
-    {"Mahesh", 45, 25, 4.1, 7.5, 120.0, "\nHe is very experienced but also slow he follows every norms"},
-    {"Ramesh", 30, 10, 4.9, 5.1, 120.0, "\nHe is one of the best personnel best services available"},
-    {"Suresh", 35, 8, 4.0, 10, 70, "\nHe is experience but one should supervise him"}};
+    {"Rajesh", 23, 5, 4.5, 2.8, 50.0, "\nOne of the best person for this work, honest and smartworking"},
+    {"Raju", 19, 1, 3.6, 4, 30.0, "\nVery new to this work worse experience for me"},
+    {"Mahesh", 45, 25, 4.1, 7.5, 60.0, "\nHe is very experienced but also slow he follows every norms"},
+    {"Ramesh", 30, 10, 4.9, 5.1, 60.0, "\nHe is one of the best personnel best services available"},
+    {"Suresh", 35, 8, 4.0, 10, 35, "\nHe is experience but one should supervise him"}};
 Personnel Plumber[5] = {
-    {"Gajendra", 23, 5, 4.5, 2.8, 100.0, "\nOne of the best person for this work, honest and smartworking"},
-    {"Mahendra", 19, 1, 3.6, 4, 60.0, "\nVery new to this work worse experience for me"},
-    {"Surendra", 45, 25, 4.1, 7.5, 120.0, "\nHe is very experienced but also slow he follows every norms"},
-    {"Ravi", 30, 10, 4.9, 5.1, 120.0, "\nHe is one of the best personnel best services available"},
-    {"Suraj", 35, 8, 4.0, 10, 70, "\nHe is experience but one should supervise him"}};
+    {"Gajendra", 23, 5, 4.5, 2.8, 50.0, "\nOne of the best person for this work, honest and smartworking"},
+    {"Mahendra", 19, 1, 3.6, 4, 30.0, "\nVery new to this work worse experience for me"},
+    {"Surendra", 45, 25, 4.1, 7.5, 60.0, "\nHe is very experienced but also slow he follows every norms"},
+    {"Ravi", 30, 10, 4.9, 5.1, 60.0, "\nHe is one of the best personnel best services available"},
+    {"Suraj", 35, 8, 4.0, 10, 25, "\nHe is experience but one should supervise him"}};
 Personnel Housekeeper[5] = {
-    {"Ali", 23, 5, 4.5, 2.8, 100.0, "\nOne of the best person for this work, honest and smartworking"},
-    {"Ayush", 19, 1, 3.6, 4, 60.0, "\nVery new to this work worse experience for me"},
-    {"Raj", 45, 25, 4.1, 7.5, 120.0, "\nHe is very experienced but also slow he follows every norms"},
-    {"Raja", 30, 10, 4.9, 5.1, 120.0, "\nHe is one of the best personnel best services available"},
-    {"Sumer", 35, 8, 4.0, 10, 70, "\nHe is experience but one should supervise him"}};
+    {"Ali", 23, 5, 4.5, 2.8, 10.0, "\nOne of the best person for this work, honest and smartworking"},
+    {"Ayush", 19, 1, 3.6, 4, 20.0, "\nVery new to this work worse experience for me"},
+    {"Raj", 45, 25, 4.1, 7.5, 30.0, "\nHe is very experienced but also slow he follows every norms"},
+    {"Raja", 30, 10, 4.9, 5.1, 50.0, "\nHe is one of the best personnel best services available"},
+    {"Sumer", 35, 8, 4.0, 10, 40, "\nHe is experience but one should supervise him"}};
 Personnel Electrician[5] = {
     {"Rajesh", 23, 5, 4.5, 2.8, 100.0, "\nOne of the best person for this work, honest and smartworking"},
     {"Raju", 19, 1, 3.6, 4, 60.0, "\nVery new to this work worse experience for me"},
@@ -167,6 +171,13 @@ Personnel Electrician[5] = {
 
 Personnel *currentPersonnelList;
 Personnel selectedPersonnel;
+
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------===========Function Definitions=============------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 // ---------------------------------------------------------------Function for signup-------------------------------------------------------
 void dashboard::signup()
@@ -193,6 +204,7 @@ void dashboard::signup()
     cout << "Signup Successful! Proceed to Login.\n";
 }
 
+
 // ------------------------------------------------------------Function for login-----------------------------------------------------------
 void dashboard::login()
 {
@@ -215,15 +227,13 @@ void dashboard::login()
     }
 }
 
-// ---------------------------------===========Function Definitions=============-------------------------------------------------------
 
 // -----------------------------------Main Menu---------------------------------------------------------------------
 void MainMenu::showMainMenu()
 {
     cout << "Main menu: " << endl;
     cout << "1. Book a Service" << endl;
-    cout << "2. Give Rating" << endl;
-    cout << "3. Exit" << endl;
+    cout << "2. Exit" << endl;
     cout << "Enter your choice: ";
 label1:
     int choice;
@@ -241,13 +251,7 @@ label1:
     case 1:
         selectService();
         break;
-
     case 2:
-        cout << "\n\nGive Rating out of 5 and write comment: " << endl;
-        cin >> something;
-        break;
-
-    case 3:
         cout << "\n\nThank you for using Believers Service Booking!" << endl;
         exit(0);
     default:
@@ -255,6 +259,7 @@ label1:
         showMainMenu();
     }
 }
+
 
 // ------------------------------------------Select Service type--------------------------------------------------------------
 void MainMenu::selectService()
@@ -264,6 +269,7 @@ void MainMenu::selectService()
     cout << "2. Electrician" << endl;
     cout << "3. Carpentor" << endl;
     cout << "4. HouseKeeper" << endl;
+    cout << "Enter -1 to exit" << endl;
     cout << "Enter your choice: ";
 label2:
     int serviceChoice;
@@ -294,6 +300,9 @@ label2:
         selectedService = "HouseKeeper";
         currentPersonnelList = Housekeeper;
         break;
+    case -1:
+        cout << "\n\nThank you for using Believers Service Booking!" << endl;
+        exit(0);
     default:
         cout << "\nInvalid option. Select right option.";
         selectService();
@@ -304,12 +313,15 @@ label2:
     lookurgency();
 }
 
+
 // --------------------------------------------Choose Urgency-----------------------------------------------------------------------
+
 void serviceBooking::lookurgency()
 {
     cout << "\n\tSelect Urgency: " << endl;
     cout << "1. Normal" << endl;
-    cout << "2. Urgent (10$ - 15$ extra charge)" << endl;
+    cout << "2. Urgent (10$ extra charge)" << endl;
+    cout << "Enter -1 to exit" << endl;
     cout << "Enter your choice: ";
 label3:
     int urgentChoice;
@@ -329,6 +341,12 @@ label3:
     else if (urgentChoice == 2)
     {
         selectedUrgency = "Urgent";
+        urgent_charges = 10;
+    }
+    else if (urgentChoice == -1)
+    {
+        cout << "\n\nThank you for using Believers Service Booking!" << endl;
+        exit(0);
     }
     else
     {
@@ -340,6 +358,7 @@ label3:
 
     enterAddress();
 }
+
 
 // -------------------------------------------Address Selection---------------------------------------------------------
 void serviceBooking::enterAddress()
@@ -359,7 +378,8 @@ void serviceBooking::enterAddress()
     }
 }
 
-int personnelChoice; // Global Variable for personnel choice
+
+
 
 // -----------------------------------------------Select Personnel----------------------------------------------------------------------
 void serviceBooking::choosePersonnel()
@@ -375,12 +395,13 @@ void serviceBooking::choosePersonnel()
              << " | Rating: " << currentPersonnelList[i].rating << " star"
              << " | Distance: " << currentPersonnelList[i].distance << " km" << endl;
         cout << " | Comment: " << currentPersonnelList[i].serviceComment << endl;
-        cout << " | personnel Fee: " << currentPersonnelList[i].payment << endl
+        cout << " | personnel Fee: " << currentPersonnelList[i].payment << "$" << endl
              << endl;
     }
 label4:
     cout << "Choose Personnel (1 - 5): ";
     // Validate input
+    int personnelChoice;
     if (!(cin >> personnelChoice))
     {
         cout << "Invalid input! Please enter a numeric value.\n ";
@@ -394,30 +415,14 @@ label4:
         choosePersonnel();
     }
     selectedPersonnel = currentPersonnelList[personnelChoice - 1];
-    urgency_charge();
-}
-
-// ---------------------------------------------urgency charge-----------------------------------------------------------
-double urgent_charges = 0;
-void serviceBooking::urgency_charge()
-{
-    if (selectedUrgency == "Urgent")
-    {
-        if (selectedPersonnel.distance > 5)
-        {
-            urgent_charges = 15;
-        }
-        else
-        {
-            urgent_charges = 10;
-        }
-    }
     processPayment();
 }
 
 // ----------------------------------------Bill Generation------------------------------------------------------------------------------------
 void serviceBooking::processPayment()
 {
+    system("cls");
+    cout << "\n";
     total_amount = selectedPersonnel.payment + urgent_charges;
     platform_fee = total_amount * 0.065;
     total_amount += platform_fee;
@@ -441,6 +446,7 @@ void payment_method::paywith()
     cout << "\t1. Credit/Debit Card" << endl;
     cout << "\t2. UPI" << endl;
     cout << "\t3. Cash" << endl;
+    cout << "\tEnter -1 to exit" << endl;
     cout << "Enter your choice: ";
 label5:
     int payment_choice;
@@ -456,21 +462,25 @@ label5:
     switch (payment_choice)
     {
     case 1:
-        cout << "You are redirect to our payment page in max 5 second";
+        cout << "You will be redirect to our payment page in 5 second";
         paymentMethod = "Credit/Debit Card";
-        this_thread::sleep_for(chrono::seconds(5));
+        sleep(5);
         Card();
         break;
     case 2:
-        cout << "You are redirect to our payment page in max 5 second";
+        cout << "You will be redirect to our payment page in 5 second";
         paymentMethod = "UPI";
-        this_thread::sleep_for(chrono::seconds(3));
+        sleep(5);
         UPI();
         break;
     case 3:
         paymentMethod = "Cash";
+        system("cls");
         showSuccessMessage();
         break;
+    case -1:
+        cout << "\n\nThank you for using Believers Service Booking!" << endl;
+        exit(0);
     default:
         cout << "Invalid option. Try again.";
         paywith();
@@ -530,13 +540,16 @@ label:
     cin >> naem;
 
     cout << "Thanks for your time\nYour payment is processing." << endl;
-    this_thread::sleep_for(chrono::seconds(1));
+    sleep(1);
     cout << "...." << endl;
-    this_thread::sleep_for(chrono::seconds(1));
+    sleep(1);
+    cout << "........." << endl;
+    sleep(1);
     cout << ".............." << endl;
-    this_thread::sleep_for(chrono::seconds(5));
+    sleep(5);
     cout << "\nYour payment is successfull.\nYou are redirected in 5 seconds";
-    this_thread::sleep_for(chrono::seconds(5));
+    sleep(5);
+    system("cls");
     showSuccessMessage();
 }
 
@@ -544,20 +557,33 @@ label:
 void payment_method::UPI()
 {
     cout << "\nWelcome to the world of payment" << endl;
-    cout << "Enter your UPI id";
+label:
+    cout << "Enter your UPI id: ";
     string id;
     cin >> id;
-    cout << "You will recieve a prompt on your \nupi payment app on your mobile." << endl
+    if (id == "")
+    {
+        cout << "\nUPI ID can't be empty. Try again.";
+        goto label;
+    }
+    if (id.length() < 9)
+    {
+        cout << "It must contain atleast 9 characters\n";
+        goto label;
+    }
+    cout << "You will recieve a prompt on your upi payment app on your mobile." << endl
          << endl;
-
     cout << "Your payment is processing." << endl;
-    this_thread::sleep_for(chrono::seconds(1));
+    sleep(1);
     cout << "...." << endl;
-    this_thread::sleep_for(chrono::seconds(1));
+    sleep(1);
+    cout << "........." << endl;
+    sleep(1);
     cout << ".............." << endl;
-    this_thread::sleep_for(chrono::seconds(5));
+    sleep(5);
     cout << "Your payment is successfull.\n You are redirected in 5 seconds";
-    this_thread::sleep_for(chrono::seconds(5));
+    sleep(5);
+    system("cls");
     showSuccessMessage();
 }
 
@@ -571,10 +597,32 @@ void serviceBooking::showSuccessMessage()
     cout << "Urgency: " << selectedUrgency << endl;
     cout << "Address: " << address << endl;
     cout << "Payment Method: " << paymentMethod << endl;
-    cout << "Total Payment: $" << selectedPersonnel.payment << endl;
+    cout << "Total Payment: $" << total_amount << endl;
     cout << "The original bill will be sent to your mobile no or email";
     cout << "\nWe will contact you soon! Have a great day!" << endl;
 }
+
+// ----------------------------------------------Rating and Review-------------------------------------------------------------
+void serviceBooking::giveRating()
+{
+    int rating;
+    string comment;
+    cout << "\n\nRate the service from 1 to 5 stars: ";
+    cin >> rating;
+    if (rating < 1 || rating > 5)
+    {
+        cout << "Invalid rating! Please enter a value between 1 and 5.\n";
+        giveRating();
+    }
+
+    cout << "Enter your review: ";
+    cin.ignore();
+    getline(cin, comment);
+
+    cout << "Thank you for your feedback!" << endl;
+}
+
+// -----------------------------------------------------End of Function Definitions-------------------------------------------------------------------
 
 // -------------------------------------------------------------------Main Function-------------------------------------------------------------------
 int main()
@@ -588,5 +636,14 @@ int main()
     dashboard myservice;
     myservice.showMainMenu();
     myservice.paywith();
+    cout << "\n\nIf You want to Rate us and give feedback press 1 else press 0: ";
+    int rate;
+    cin >> rate;
+    if (rate == 1)
+    {
+        myservice.giveRating();
+    }
     return 0;
 }
+
+// ===========================================End of program=======================================================================
