@@ -267,7 +267,7 @@ void MainMenu::selectService()
     cout << "\n\nServices available at our bench" << endl;
     cout << "1. Plumber" << endl;
     cout << "2. Electrician" << endl;
-    cout << "3. Carpentor" << endl;
+    cout << "3. Carpenter" << endl;
     cout << "4. HouseKeeper" << endl;
     cout << "Enter -1 to exit" << endl;
     cout << "Enter your choice: ";
