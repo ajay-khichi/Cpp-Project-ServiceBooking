@@ -10,11 +10,13 @@ using namespace std;
 
 int temp = 0;
 // Map to store user credentials (mimics a database)
+// map<key, value> where key is username and value is password
 map<string, string> userDatabase;
 
 // Function to load user data from file into memory -----------------------------------------------------------------------
 void loadUserData()
 {
+    // Open the file in read mode
     ifstream userFile("users.txt");
     string username, password;
 
@@ -23,13 +25,18 @@ void loadUserData()
     {
         userDatabase[username] = password;
     }
+    // Close the file
     userFile.close();
 }
 
 // Function to save new user data into the file --------------------------------------------------------------------------
 void saveUserData()
 {
-    ofstream userFile("users.txt", ios::trunc); // Open in append mode
+    // Open the file in write mode
+    // ios::trunc mode will overwrite the file
+    // ios::app mode will append to the file
+    ofstream userFile("users.txt", ios::trunc);
+    // Write each user from the map to the file
     for (const auto &entry : userDatabase)
     {
         userFile << entry.first << " " << entry.second << endl;
@@ -71,6 +78,8 @@ public:
     void UPI();
 };
 
+// ================================== Main Menu Class ============================================================
+
 class MainMenu : public payment_method
 {
 public:
@@ -94,6 +103,7 @@ public:
             cout << "Enter your choice: ";
 
             // Validate input
+            // Check if the input is a numeric value
             if (!(cin >> choice))
             {
                 cout << "Invalid input! Please enter a numeric value: ";
@@ -235,15 +245,18 @@ void MainMenu::showMainMenu()
     cout << "1. Book a Service" << endl;
     cout << "2. Exit" << endl;
     cout << "Enter your choice: ";
-label1:
     int choice;
-    // Validate input
-    if (!(cin >> choice))
-    {
-        cout << "Invalid input! Please enter a numeric value: ";
-        cin.clear();                                         // Clear the error flag
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-        goto label1;                                         // Retry the loop
+    while(true){
+    
+        // Validate input
+        if (!(cin >> choice))
+        {
+            cout << "Invalid input! Please enter a numeric value: ";
+            cin.clear();                                         // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            continue;                                         // Retry the loop
+        }
+        break;
     }
 
     switch (choice)
@@ -271,15 +284,16 @@ void MainMenu::selectService()
     cout << "4. HouseKeeper" << endl;
     cout << "Enter -1 to exit" << endl;
     cout << "Enter your choice: ";
-label2:
     int serviceChoice;
-    // Validate input
-    if (!(cin >> serviceChoice))
-    {
-        cout << "Invalid input! Please enter a numeric value: ";
-        cin.clear();                                         // Clear the error flag
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-        goto label2;                                         // Retry the loop
+    while(true){
+        if (!(cin >> serviceChoice))
+        {
+            cout << "Invalid input! Please enter a numeric value: ";
+            cin.clear();                                         // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            continue;                                         // Retry the loop
+        }
+        break;
     }
 
     switch (serviceChoice)
@@ -320,18 +334,19 @@ void serviceBooking::lookurgency()
 {
     cout << "\n\tSelect Urgency: " << endl;
     cout << "1. Normal" << endl;
-    cout << "2. Urgent (10$ extra charge)" << endl;
+    cout << "2. Urgent (2$ extra charge)" << endl;
     cout << "Enter -1 to exit" << endl;
     cout << "Enter your choice: ";
-label3:
     int urgentChoice;
-    // Validate input
-    if (!(cin >> urgentChoice))
-    {
-        cout << "Invalid input! Please enter a numeric value: ";
-        cin.clear();                                         // Clear the error flag
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-        goto label3;                                         // Retry the loop
+    while(true){
+        if (!(cin >> urgentChoice))
+        {
+            cout << "Invalid input! Please enter a numeric value: ";
+            cin.clear();                                         // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            continue;                                         // Retry the loop
+        }
+        break;
     }
 
     if (urgentChoice == 1)
@@ -341,7 +356,7 @@ label3:
     else if (urgentChoice == 2)
     {
         selectedUrgency = "Urgent";
-        urgent_charges = 10;
+        urgent_charges = 2;
     }
     else if (urgentChoice == -1)
     {
@@ -398,16 +413,18 @@ void serviceBooking::choosePersonnel()
         cout << " | personnel Fee: " << currentPersonnelList[i].payment << "$" << endl
              << endl;
     }
-label4:
     cout << "Choose Personnel (1 - 5): ";
     // Validate input
     int personnelChoice;
-    if (!(cin >> personnelChoice))
-    {
-        cout << "Invalid input! Please enter a numeric value.\n ";
-        cin.clear();                                         // Clear the error flag
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-        goto label4;                                         // Retry the loop
+    while(true){
+        if (!(cin >> personnelChoice))
+        {
+            cout << "Invalid input! Please enter a numeric value: ";
+            cin.clear();                                         // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            continue;                                         // Retry the loop
+        }
+        break;
     }
     if (personnelChoice < 1 || personnelChoice > 5)
     {
@@ -424,7 +441,7 @@ void serviceBooking::processPayment()
     system("cls");
     cout << "\n";
     total_amount = selectedPersonnel.payment + urgent_charges;
-    platform_fee = total_amount * 0.065;
+    platform_fee = total_amount * 0.05;
     total_amount += platform_fee;
     double tax = total_amount * 0.18;
     total_amount += tax;
@@ -448,15 +465,16 @@ void payment_method::paywith()
     cout << "\t3. Cash" << endl;
     cout << "\tEnter -1 to exit" << endl;
     cout << "Enter your choice: ";
-label5:
     int payment_choice;
-    // Validate input
-    if (!(cin >> payment_choice))
-    {
-        cout << "Invalid input! Please enter a numeric value: ";
-        cin.clear();                                         // Clear the error flag
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-        goto label5;                                         // Retry the loop
+    while(true){
+        if (!(cin >> payment_choice))
+        {
+            cout << "Invalid input! Please enter a numeric value: ";
+            cin.clear();                                         // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            continue;                                         // Retry the loop
+        }
+        break;
     }
 
     switch (payment_choice)
@@ -529,7 +547,7 @@ label:
         goto label;
     }
 
-    cout << "\nEnter expiry(format: mm/yy): ";
+    cout << "\nEnter expiry(format: mm yy): ";
     string expiry = "";
     cin >> expiry;
     cout << "\nEnter CVV(format: xxx): ";
@@ -605,7 +623,7 @@ void serviceBooking::showSuccessMessage()
 // ----------------------------------------------Rating and Review-------------------------------------------------------------
 void serviceBooking::giveRating()
 {
-    int rating;
+    double rating;
     string comment;
     cout << "\n\nRate the service from 1 to 5 stars: ";
     cin >> rating;
