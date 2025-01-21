@@ -90,6 +90,6 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 
 ## Contact
 For any queries or suggestions, feel free to reach out:
-- Ajay Khichi: [ajaysingh7773@hotmail.com.com](mailto:ajaysingh7773@hotmail.com)
+- Ajay Khichi: [ajaysingh7773@hotmail.com](mailto:ajaysingh7773@hotmail.com)
 - GitHub Repository: [Believers Service Booking System](https://github.com/ajay-khichi/Cpp-Project-ServiceBooking)
 
